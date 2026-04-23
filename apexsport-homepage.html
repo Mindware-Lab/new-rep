@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexSport – Live Sports News & Scores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy-deep:   #042C53;
+      --navy-mid:    #0C447C;
+      --navy-light:  #185FA5;
+      --blue:        #378ADD;
+      --blue-pale:   #B5D4F4;
+      --blue-ghost:  #E6F1FB;
+      --red:         #E24B4A;
+      --red-dark:    #A32D2D;
+      --red-pale:    #FCEBEB;
+      --amber:       #EF9F27;
+      --amber-dark:  #BA7517;
+      --amber-pale:  #FAEEDA;
+      --green:       #639922;
+      --green-pale:  #EAF3DE;
+      --pink:        #D4537E;
+      --pink-pale:   #FBEAF0;
+      --white:       #FFFFFF;
+      --text-on-dark: #B5D4F4;
+      --body-bg:     #F4F6FA;
+      --card-bg:     #FFFFFF;
+      --card-border: rgba(0,0,0,0.08);
+      --text-primary: #1A1A2E;
+      --text-muted:   #5F6680;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--body-bg);
+      color: var(--text-primary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--navy-deep);
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+      gap: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--red);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+    .logo-text span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      flex: 1;
+      justify-content: center;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-on-dark);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--navy-light);
+      color: #fff;
+    }
+
+    .nav-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 13px;
+      padding: 7px 18px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn:active { transform: scale(0.97); }
+    .btn-ghost { background: var(--navy-light); color: var(--blue-pale); }
+    .btn-primary { background: var(--red); color: #fff; }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--red);
+      overflow: hidden;
+      height: 34px;
+      display: flex;
+      align-items: center;
+    }
+    .ticker-label {
+      background: #fff;
+      color: var(--red);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .ticker-track {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .ticker-inner {
+      display: flex;
+      gap: 2.5rem;
+      animation: scroll-ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-inner:hover { animation-play-state: paused; }
+    @keyframes scroll-ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      font-size: 13px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ticker-item strong { font-weight: 600; }
+    .ticker-time {
+      opacity: 0.65;
+      font-size: 12px;
+    }
+    .ticker-sep { opacity: 0.3; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy-deep);
+      padding: 2rem;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    /* main hero card */
+    .hero-main {
+      background: var(--navy-mid);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-main::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 55%;
+      height: 100%;
+      background: var(--navy-light);
+      clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+      opacity: 0.45;
+    }
+    .hero-main::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: 40px;
+      width: 220px; height: 220px;
+      border: 2px solid rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .hero-time { font-size: 12px; color: var(--blue-pale); }
+    .hero-main h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+      margin-bottom: 12px;
+      max-width: 520px;
+    }
+    .hero-excerpt {
+      font-size: 14px;
+      color: var(--blue-pale);
+      max-width: 480px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* sidebar cards */
+    .hero-sidebar { display: flex; flex-direction: column; gap: 10px; }
+    .sidebar-card {
+      background: var(--navy-mid);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 0.5px solid rgba(255,255,255,0.06);
+    }
+    .sidebar-card:hover { background: var(--navy-light); }
+    .sidebar-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.35;
+      margin-top: 8px;
+      margin-bottom: 5px;
+    }
+    .sidebar-meta { font-size: 11px; color: var(--blue-pale); }
+
+    /* ── TAGS ── */
+    .tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+    .tag-live     { background: var(--red);        color: var(--red-pale); }
+    .tag-breaking { background: var(--red);        color: var(--red-pale); }
+    .tag-football { background: var(--navy-light); color: var(--blue-ghost); }
+    .tag-tennis   { background: var(--green);      color: var(--green-pale); }
+    .tag-formula  { background: var(--amber-dark); color: var(--amber-pale); }
+    .tag-basketball { background: var(--pink);     color: var(--pink-pale); }
+    .tag-golf     { background: var(--green);      color: var(--green-pale); }
+    .tag-athletics { background: var(--amber-dark);color: var(--amber-pale); }
+
+    /* ── MAIN CONTENT ── */
+    .main-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 14px;
+    }
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 2px; bottom: 2px;
+      width: 4px;
+      background: var(--red);
+      border-radius: 2px;
+    }
+    .see-all {
+      font-size: 13px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .see-all:hover { text-decoration: underline; }
+
+    /* article cards grid */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .article-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--card-border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .card-thumb {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-thumb svg { opacity: 0.9; }
+    .card-body { padding: 14px; }
+    .card-body h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.35;
+      margin: 8px 0 6px;
+      color: var(--text-primary);
+    }
+    .card-meta { font-size: 12px; color: var(--text-muted); }
+
+    /* full-width feature card */
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--card-border);
+      overflow: hidden;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      margin-bottom: 1rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .feature-thumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .feature-body h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 8px 0 8px;
+      color: var(--text-primary);
+    }
+    .feature-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .widget {
+      background: var(--card-bg);
+      border: 0.5px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .widget-head {
+      background: var(--navy-mid);
+      padding: 10px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    /* scores widget */
+    .score-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 0.5px solid var(--card-border);
+      font-size: 13px;
+    }
+    .score-row:last-child { border-bottom: none; }
+    .score-teams { display: flex; flex-direction: column; gap: 4px; }
+    .score-team { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .score-team .name { font-weight: 500; color: var(--text-primary); }
+    .score-team .score { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); min-width: 20px; text-align: right; }
+    .score-team.winner .name, .score-team.winner .score { color: var(--navy-mid); }
+    .score-status { font-size: 11px; color: var(--red); font-weight: 600; white-space: nowrap; text-align: right; }
+    .score-status.ft { color: var(--text-muted); }
+
+    /* standings widget */
+    .standings-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .standings-table th {
+      padding: 6px 10px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 0.5px solid var(--card-border);
+    }
+    .standings-table th:first-child { text-align: left; }
+    .standings-table td {
+      padding: 8px 10px;
+      text-align: right;
+      color: var(--text-primary);
+      border-bottom: 0.5px solid var(--card-border);
+    }
+    .standings-table td:first-child { text-align: left; }
+    .standings-table tr:last-child td { border-bottom: none; }
+    .standings-table tr:hover td { background: var(--body-bg); }
+    .pos { color: var(--text-muted); font-size: 11px; width: 20px; }
+    .team-name { font-weight: 500; }
+    .pts { font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
+    .form-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      margin: 0 1px;
+    }
+    .w { background: var(--green); }
+    .d { background: var(--amber); }
+    .l { background: var(--red); }
+
+    /* newsletter widget */
+    .newsletter-widget { padding: 1.25rem; }
+    .newsletter-widget h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .newsletter-widget p { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .newsletter-widget input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: 'Barlow', sans-serif;
+      margin-bottom: 8px;
+      background: var(--body-bg);
+      color: var(--text-primary);
+    }
+    .newsletter-widget input:focus {
+      outline: none;
+      border-color: var(--blue);
+      background: #fff;
+    }
+    .newsletter-widget .btn { width: 100%; text-align: center; }
+
+    /* categories */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px;
+    }
+    .cat-btn {
+      background: var(--body-bg);
+      border: 0.5px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .cat-btn:hover { background: var(--blue-ghost); color: var(--navy-mid); }
+    .cat-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-deep);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 1.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr repeat(3, 140px);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--text-on-dark);
+      max-width: 260px;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+    .footer-col h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: var(--text-on-dark);
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: color 0.15s;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom {
+      border-top: 0.5px solid rgba(255,255,255,0.1);
+      padding-top: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p { font-size: 12px; color: var(--blue-pale); opacity: 0.7; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner, .main-wrap { grid-template-columns: 1fr; }
+      .hero-sidebar { display: none; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .feature-card { grid-template-columns: 1fr; }
+      .feature-thumb { height: 120px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .navbar-inner { padding: 0 1rem; }
+      .hero, .main-wrap { padding: 1rem; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="#">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <polygon points="9,2 11,7 16.5,7 12,10.5 14,16 9,12.5 4,16 6,10.5 1.5,7 7,7" fill="white"/>
+          </svg>
+        </div>
+        <span class="logo-text">APEX<span>SPORT</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Football</a></li>
+        <li><a href="#">Tennis</a></li>
+        <li><a href="#">Formula 1</a></li>
+        <li><a href="#">Basketball</a></li>
+        <li><a href="#">Golf</a></li>
+        <li><a href="#">Athletics</a></li>
+        <li><a href="#">More</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost">Sign in</button>
+        <button class="btn btn-primary">Subscribe</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LIVE SCORES TICKER -->
+  <div class="ticker">
+    <span class="ticker-label">Live scores</span>
+    <div class="ticker-track">
+      <div class="ticker-inner" id="ticker-inner">
+        <span class="ticker-item"><strong>Arsenal</strong> 2 – 1 <strong>Chelsea</strong> <span class="ticker-time">67'</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Djokovic</strong> 6-4, 3-2 <strong>Alcaraz</strong> <span class="ticker-time">Set 2</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Lakers</strong> 88 – 94 <strong>Warriors</strong> <span class="ticker-time">Q3</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Verstappen</strong> leads Lap 42/58 <span class="ticker-time">Bahrain GP</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Man City</strong> 0 – 0 <strong>Liverpool</strong> <span class="ticker-time">12'</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Swiatek</strong> vs <strong>Gauff</strong> <span class="ticker-time">Starting soon</span></span>
+        <span class="ticker-sep">|</span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item"><strong>Arsenal</strong> 2 – 1 <strong>Chelsea</strong> <span class="ticker-time">67'</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Djokovic</strong> 6-4, 3-2 <strong>Alcaraz</strong> <span class="ticker-time">Set 2</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Lakers</strong> 88 – 94 <strong>Warriors</strong> <span class="ticker-time">Q3</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Verstappen</strong> leads Lap 42/58 <span class="ticker-time">Bahrain GP</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Man City</strong> 0 – 0 <strong>Liverpool</strong> <span class="ticker-time">12'</span></span>
+        <span class="ticker-sep">|</span>
+        <span class="ticker-item"><strong>Swiatek</strong> vs <strong>Gauff</strong> <span class="ticker-time">Starting soon</span></span>
+        <span class="ticker-sep">|</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-main">
+        <div class="hero-content">
+          <div class="hero-meta">
+            <span class="tag tag-breaking">Breaking</span>
+            <span class="hero-time">4 mins ago · Football</span>
+          </div>
+          <h1>England secure historic World Cup final berth with Bellingham stunner</h1>
+          <p class="hero-excerpt">A last-minute volley from Jude Bellingham sent Wembley into raptures as England beat France 2–1 in a pulsating semi-final clash that will live long in the memory.</p>
+          <div class="hero-cta">
+            <button class="btn btn-primary">Read full story →</button>
+          </div>
+        </div>
+      </div>
+      <div class="hero-sidebar">
+        <div class="sidebar-card">
+          <span class="tag tag-tennis">Tennis</span>
+          <h3>Swiatek cruises into French Open final with dominant straight-sets victory</h3>
+          <span class="sidebar-meta">12 mins ago</span>
+        </div>
+        <div class="sidebar-card">
+          <span class="tag tag-formula">Formula 1</span>
+          <h3>Verstappen extends championship lead after dramatic Bahrain GP victory</h3>
+          <span class="sidebar-meta">28 mins ago</span>
+        </div>
+        <div class="sidebar-card">
+          <span class="tag tag-basketball">Basketball</span>
+          <h3>LeBron posts 40-point triple-double in must-win Lakers play-off game</h3>
+          <span class="sidebar-meta">1 hr ago</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT + SIDEBAR -->
+  <div class="main-wrap">
+    <main>
+
+      <!-- Latest Stories -->
+      <div class="section-header">
+        <h2 class="section-title">Latest stories</h2>
+        <a class="see-all" href="#">See all →</a>
+      </div>
+      <div class="articles-grid">
+
+        <div class="article-card">
+          <div class="card-thumb" style="background:#0C447C;">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <circle cx="28" cy="28" r="22" stroke="white" stroke-width="2.5" fill="none"/>
+              <path d="M28 6 L28 50 M6 28 L50 28" stroke="white" stroke-width="1.5"/>
+              <circle cx="28" cy="28" r="9" stroke="white" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="tag tag-tennis">Tennis</span>
+            <h3>Wimbledon draw: who faces who in the first round?</h3>
+            <span class="card-meta">2 hrs ago · 4 min read</span>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <div class="card-thumb" style="background:#A32D2D;">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <polygon points="28,8 34,22 50,22 37,31 42,46 28,36 14,46 19,31 6,22 22,22" stroke="white" stroke-width="2.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="tag tag-football">Football</span>
+            <h3>Premier League title race: every scenario that could decide the trophy</h3>
+            <span class="card-meta">3 hrs ago · 6 min read</span>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <div class="card-thumb" style="background:#854F0B;">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <ellipse cx="28" cy="36" rx="20" ry="9" stroke="white" stroke-width="2" fill="none"/>
+              <path d="M10 24 L28 14 L46 24" stroke="white" stroke-width="2" fill="none"/>
+              <circle cx="28" cy="14" r="4" fill="white"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="tag tag-formula">Formula 1</span>
+            <h3>Red Bull's secret upgrade that changed the Bahrain Grand Prix</h3>
+            <span class="card-meta">5 hrs ago · 5 min read</span>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <div class="card-thumb" style="background:#993556;">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <circle cx="28" cy="20" r="8" stroke="white" stroke-width="2.5" fill="none"/>
+              <path d="M10 50 C10 38 46 38 46 50" stroke="white" stroke-width="2.5" fill="none"/>
+              <rect x="18" y="6" width="20" height="12" rx="6" stroke="white" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="tag tag-basketball">Basketball</span>
+            <h3>NBA play-offs: bracket predictions and top upset picks</h3>
+            <span class="card-meta">6 hrs ago · 7 min read</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feature story -->
+      <div class="section-header">
+        <h2 class="section-title">In depth</h2>
+        <a class="see-all" href="#">More features →</a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-thumb" style="background:#185FA5; height:100%;">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="32" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M20 40 L35 55 L60 28" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <span class="tag tag-football">Football</span>
+          <h3>How England rebuilt from the Euros heartbreak to reach the World Cup final</h3>
+          <p>A deep dive into Gareth Southgate's tactical evolution, the emergence of a new generation, and the cultural shift that turned faint hope into genuine expectation.</p>
+          <span class="card-meta">Yesterday · 12 min read</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-thumb" style="background:#3B6D11; height:100%;">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <rect x="20" y="16" width="40" height="48" rx="4" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M28 30 L52 30 M28 40 L52 40 M28 50 L44 50" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <span class="tag tag-tennis">Tennis</span>
+          <h3>The numbers behind Swiatek's dominance on clay: a statistical breakdown</h3>
+          <p>Iga Swiatek's record on clay courts is among the most dominant in the open era. We crunch the data to understand just how far ahead of the competition she truly is.</p>
+          <span class="card-meta">2 days ago · 9 min read</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Live Scores -->
+      <div class="widget">
+        <div class="widget-head">Live scores</div>
+        <div class="score-row">
+          <div class="score-teams">
+            <div class="score-team winner"><span class="name">Arsenal</span><span class="score">2</span></div>
+            <div class="score-team"><span class="name">Chelsea</span><span class="score">1</span></div>
+          </div>
+          <div><span class="score-status">67'</span><br><span style="font-size:10px;color:var(--text-muted)">Premier League</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-teams">
+            <div class="score-team"><span class="name">Man City</span><span class="score">0</span></div>
+            <div class="score-team"><span class="name">Liverpool</span><span class="score">0</span></div>
+          </div>
+          <div><span class="score-status">12'</span><br><span style="font-size:10px;color:var(--text-muted)">Premier League</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-teams">
+            <div class="score-team"><span class="name">Lakers</span><span class="score">88</span></div>
+            <div class="score-team winner"><span class="name">Warriors</span><span class="score">94</span></div>
+          </div>
+          <div><span class="score-status">Q3</span><br><span style="font-size:10px;color:var(--text-muted)">NBA Playoffs</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-teams">
+            <div class="score-team winner"><span class="name">Spurs</span><span class="score">3</span></div>
+            <div class="score-team"><span class="name">Wolves</span><span class="score">1</span></div>
+          </div>
+          <div><span class="score-status ft">FT</span><br><span style="font-size:10px;color:var(--text-muted)">Premier League</span></div>
+        </div>
+      </div>
+
+      <!-- PL Standings -->
+      <div class="widget">
+        <div class="widget-head">Premier League</div>
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Team</th>
+              <th>P</th>
+              <th>GD</th>
+              <th>Pts</th>
+              <th>Form</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pos">1</td>
+              <td class="team-name">Arsenal</td>
+              <td>35</td>
+              <td>+38</td>
+              <td class="pts">82</td>
+              <td>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot d"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="pos">2</td>
+              <td class="team-name">Man City</td>
+              <td>35</td>
+              <td>+35</td>
+              <td class="pts">80</td>
+              <td>
+                <span class="form-dot w"></span>
+                <span class="form-dot l"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot d"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="pos">3</td>
+              <td class="team-name">Liverpool</td>
+              <td>35</td>
+              <td>+31</td>
+              <td class="pts">74</td>
+              <td>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot l"></span>
+                <span class="form-dot w"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="pos">4</td>
+              <td class="team-name">Chelsea</td>
+              <td>35</td>
+              <td>+14</td>
+              <td class="pts">62</td>
+              <td>
+                <span class="form-dot l"></span>
+                <span class="form-dot d"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot l"></span>
+                <span class="form-dot d"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="pos">5</td>
+              <td class="team-name">Spurs</td>
+              <td>35</td>
+              <td>+9</td>
+              <td class="pts">57</td>
+              <td>
+                <span class="form-dot w"></span>
+                <span class="form-dot l"></span>
+                <span class="form-dot d"></span>
+                <span class="form-dot w"></span>
+                <span class="form-dot w"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Browse by sport -->
+      <div class="widget">
+        <div class="widget-head">Browse by sport</div>
+        <div class="categories-grid">
+          <button class="cat-btn"><span class="cat-icon">⚽</span>Football</button>
+          <button class="cat-btn"><span class="cat-icon">🎾</span>Tennis</button>
+          <button class="cat-btn"><span class="cat-icon">🏎️</span>F1</button>
+          <button class="cat-btn"><span class="cat-icon">🏀</span>NBA</button>
+          <button class="cat-btn"><span class="cat-icon">⛳</span>Golf</button>
+          <button class="cat-btn"><span class="cat-icon">🏃</span>Athletics</button>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="widget">
+        <div class="newsletter-widget">
+          <h3>Stay ahead of the game</h3>
+          <p>Breaking news, match previews, and analysis delivered to your inbox every morning.</p>
+          <input type="email" placeholder="Your email address" />
+          <button class="btn btn-primary">Subscribe free</button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="logo" href="#" style="text-decoration:none;">
+            <div class="logo-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <polygon points="9,2 11,7 16.5,7 12,10.5 14,16 9,12.5 4,16 6,10.5 1.5,7 7,7" fill="white"/>
+              </svg>
+            </div>
+            <span class="logo-text">APEX<span>SPORT</span></span>
+          </a>
+          <p>Your home for live sports news, scores, and in-depth analysis from around the world, around the clock.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Sports</h4>
+          <a href="#">Football</a>
+          <a href="#">Tennis</a>
+          <a href="#">Formula 1</a>
+          <a href="#">Basketball</a>
+          <a href="#">Golf</a>
+          <a href="#">Athletics</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About us</a>
+          <a href="#">Careers</a>
+          <a href="#">Advertise</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+          <a href="#">Cookie settings</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ApexSport Media Ltd. All rights reserved.</p>
+        <p>Made with passion for sport.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
